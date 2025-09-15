@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
-
+useEffect(()=>{
+    axios.get('https://springboot-app-production-97cb.up.railway.app/todos')
+    // axios.get('http://localhost:8080/todos')
+    .then(response=>{
+            setTodos(response.data)}).catch(error=>alert(error))
+},[])
   const addTodo = (e) => {
-    e.preventDefault();
-    if (input.trim()) {
-      setTodos([...todos, input.trim()]);
-      setInput('');
-    }
-  };
+  e.preventDefault();
+  if (input.trim()) {
+    const newTodo = {
+      id: todos.length + 1,      // simple auto-increment
+      title: input.trim(),
+      completed: false
+    };
+    setTodos([...todos, newTodo]);
+    setInput('');
+  }
+};
+
 
   const removeTodo = (index) => {
     setTodos(todos.filter((_, i) => i !== index));
@@ -32,7 +44,7 @@ const TodoList = () => {
       <ul style={{ listStyle: 'none', padding: 0, marginTop: 16 }}>
         {todos.map((todo, idx) => (
           <li key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span>{todo}</span>
+            <span>{todo.title}</span>
             <button onClick={() => removeTodo(idx)} style={{ background: '#ff4d4f', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 8px', cursor: 'pointer' }}>Delete</button>
           </li>
         ))}
