@@ -5,7 +5,7 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
 useEffect(()=>{
-    axios.get('https://springboot-app-production-97cb.up.railway.app/todos')
+    axios.get('https://myspringbootapp.up.railway.app/todos')
     // axios.get('http://localhost:8080/todos')
     .then(response=>{
             setTodos(response.data)}).catch(error=>alert(error))
